@@ -1,12 +1,12 @@
-import { generalSettings, saveSettings } from './storage-utils';
-import { PromptVariable, Template, ModelConfig } from '../types/types';
-import { compileTemplate } from './template-compiler';
-import { applyFilters } from './filters';
-import { formatDuration } from './string-utils';
-import { adjustNoteNameHeight } from './ui-utils';
+import { ModelConfig, PromptVariable, Template } from '../types/types';
 import { debugLog } from './debug';
+import { applyFilters } from './filters';
 import { getMessage } from './i18n';
+import { generalSettings, saveSettings } from './storage-utils';
+import { formatDuration } from './string-utils';
+import { compileTemplate } from './template-compiler';
 import { updateTokenCount } from './token-counter';
+import { adjustNoteNameHeight } from './ui-utils';
 
 const RATE_LIMIT_RESET_TIME = 60000; // 1 minute in milliseconds
 let lastRequestTime = 0;
@@ -139,6 +139,7 @@ export async function sendToLLM(promptContext: string, content: string, promptVa
 			requestUrl = provider.baseUrl;
 			requestBody = {
 				model: model.providerModelId,
+				reasoning_effort: 'high',
 				messages: [
 					{ role: 'system', content: systemContent },
 					{ role: 'user', content: `${promptContext}` },
